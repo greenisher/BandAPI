@@ -1,4 +1,6 @@
 package com.example.band;
 
-public class MusicianRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+interface MusicianRepository extends JpaRepository<Musician, Long> {
 }
