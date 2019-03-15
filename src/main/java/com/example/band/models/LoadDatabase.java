@@ -1,5 +1,6 @@
-package com.example.band;
+package com.example.band.models;
 
+import com.example.band.repositories.MusicianRepository;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.boot.CommandLineRunner;

@@ -1,8 +1,8 @@
-package com.example.band;
+package com.example.band.exceptions;
 
 public class MusicianNotFoundException extends Throwable {
 
-    MusicianNotFoundException(Long id) {
+    public MusicianNotFoundException(Long id) {
         super("Can't find musician");
     }
 }

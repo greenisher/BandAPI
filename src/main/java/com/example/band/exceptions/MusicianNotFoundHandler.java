@@ -1,5 +1,6 @@
-package com.example.band;
+package com.example.band.exceptions;
 
+import com.example.band.exceptions.MusicianNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 

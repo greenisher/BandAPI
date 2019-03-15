@@ -1,4 +1,4 @@
-package com.example.band;
+package com.example.band.models;
 
 import lombok.Data;
 

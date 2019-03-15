@@ -1,10 +1,14 @@
-package com.example.band;
+package com.example.band.controllers;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.example.band.exceptions.MusicianNotFoundException;
+import com.example.band.repositories.MusicianRepository;
+import com.example.band.resources.MusicianResourceAssembler;
+import com.example.band.models.Musician;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +30,7 @@ public class MusicianController {
     }
 
     @GetMapping("/musicians")
-    Resources<Resource<Musician>> all() {
+    public Resources<Resource<Musician>> all() {
         List<Resource<Musician>> musicians = repository.findAll().stream()
                 .map(assembler::toResource)
                 .collect(Collectors.toList());
@@ -46,7 +50,7 @@ public class MusicianController {
     }
 
     @GetMapping("/musicians/{id}")
-    Resource<Musician> one(@PathVariable Long id) {
+    public Resource<Musician> one(@PathVariable Long id) throws MusicianNotFoundException {
 
         Musician musician = repository.findById(id)
                 .orElseThrow(() -> new MusicianNotFoundException(id));
