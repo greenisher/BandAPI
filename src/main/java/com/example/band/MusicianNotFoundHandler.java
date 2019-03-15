@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @ControllerAdvice
-public class MusicianNotFoundAdvice {
+public class MusicianNotFoundHandler {
 
     @ResponseBody
     @ExceptionHandler(MusicianNotFoundException.class)

@@ -1,8 +1,8 @@
 package com.example.band;
 
-class MusicianNotFoundException extends RuntimeException {
-    MusicianNotFoundException(Long id) {
+public class MusicianNotFoundException extends Throwable {
 
-        super("cannot find musician " + id);
+    MusicianNotFoundException(Long id) {
+        super("Can't find musician");
     }
 }
