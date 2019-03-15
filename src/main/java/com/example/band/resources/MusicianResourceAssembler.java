@@ -1,13 +1,13 @@
 package com.example.band.resources;
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
-
 import com.example.band.controllers.MusicianController;
-import com.example.band.exceptions.MusicianNotFoundException;
 import com.example.band.models.Musician;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.stereotype.Component;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @Component
 public class MusicianResourceAssembler implements ResourceAssembler<Musician, Resource<Musician>>{
@@ -16,6 +16,5 @@ public class MusicianResourceAssembler implements ResourceAssembler<Musician, Re
     public Resource<Musician> toResource(Musician musician) {
         return new Resource<>(musician,
                 linkTo(methodOn(MusicianController.class).one(musician.getId())).withSelfRel());
-        //linkTo(methodOn(MusicianController.class).all()).withRel("musicians"));
     }
 }
