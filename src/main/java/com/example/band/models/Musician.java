@@ -21,7 +21,7 @@ public class Musician {
     private Integer albums;
     private Boolean active;
 
-    Musician(String bandName, Integer albums, Boolean active) {
+    public Musician(String bandName, Integer albums, Boolean active) {
         this.bandName = bandName;
         this.albums = albums;
         this.active = active;

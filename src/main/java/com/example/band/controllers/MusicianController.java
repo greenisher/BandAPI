@@ -29,7 +29,7 @@ public class MusicianController {
     }
 
     @GetMapping("/musicians/{id}")
-    public ResponseEntity<?> one(@PathVariable("id") long id) {
+    public ResponseEntity<?> getOne(@PathVariable("id") long id) {
         Musician musician = musicianService.findMusician(id);
         if(musician == null) {
             return new ResponseEntity(new MusicianNotFoundException(id), HttpStatus.NOT_FOUND);
