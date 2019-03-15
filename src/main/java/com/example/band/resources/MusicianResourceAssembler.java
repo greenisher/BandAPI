@@ -14,12 +14,8 @@ public class MusicianResourceAssembler implements ResourceAssembler<Musician, Re
 
     @Override
     public Resource<Musician> toResource(Musician musician) {
-        try {
-            return new Resource<>(musician,
-                    linkTo(methodOn(MusicianController.class).one(musician.getId())).withSelfRel(),
-                    linkTo(methodOn(MusicianController.class).all()).withRel("musicians"));
-        } catch (MusicianNotFoundException e) {
-            e.printStackTrace();
-        }return null;
+        return new Resource<>(musician,
+                linkTo(methodOn(MusicianController.class).one(musician.getId())).withSelfRel());
+        //linkTo(methodOn(MusicianController.class).all()).withRel("musicians"));
     }
 }
