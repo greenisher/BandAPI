@@ -1,6 +1,6 @@
 package com.example.band.exceptions;
 
-public class MusicianConflictError{
+public class MusicianConflictError extends Throwable {
 
     private String conflictMessage;
 

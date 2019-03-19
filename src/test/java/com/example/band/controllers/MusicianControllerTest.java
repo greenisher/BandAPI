@@ -1,80 +1,69 @@
 package com.example.band.controllers;
 
-import com.example.band.models.Musician;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.client.RestTemplate;
 
-import java.net.URI;
-import java.util.LinkedHashMap;
+import com.example.band.models.Musician;
+import com.example.band.services.MusicianService;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.context.WebApplicationContext;
+
+import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
+
+@SpringBootTest
+@RunWith(SpringRunner.class)
 public class MusicianControllerTest {
 
-    public static final String REST_SERVICE_URI = "http://localhost:8080/";
+    MockMvc mockMvc;
 
     @Autowired
-    private MockMvc mvc;
+    protected WebApplicationContext wac;
+
+    @Autowired
+    MusicianController musicianController;
 
     @MockBean
-    private MusicianController musicianController;
+    MusicianService musicianService;
 
-    @Test
-    @SuppressWarnings("unchecked")
-    private static void listAllMusicians(){
-        RestTemplate restTemplate = new RestTemplate();
-        List<LinkedHashMap<String, Object>> musiciansMap = restTemplate.getForObject(REST_SERVICE_URI + "/musicians/", List.class);
+    private List<Musician> musicians;
 
-        if(musiciansMap!=null){
-            for(LinkedHashMap<String, Object> map : musiciansMap){
-                System.out.println("Musician: id="+map.get("id")+", Band Name="+map.get("BandName"));
-            }
-        }else {
-            System.out.println("Musicians do not exist.");
-        }
+    @Before
+    public void setup() throws Exception {
+        this.mockMvc = standaloneSetup(this.musicianController).build();
+        Musician musician1 = Musician.builder()
+                .bandName("Aja")
+                .albums(1)
+                .active(true)
+                .build();
+        Musician musician2 = Musician.builder()
+                .bandName("apogee")
+                .albums(0)
+                .active(true)
+                .build();
 
-    }
-
-
-    @Test
-    private static void getOne(){
-        RestTemplate restTemplate = new RestTemplate();
-        Musician musician = restTemplate.getForObject(REST_SERVICE_URI + "musicians/1", Musician.class);
-        System.out.println(musician);
+        musicians = new ArrayList<>();
+        musicians.add(musician1);
+        musicians.add(musician2);
     }
 
     @Test
-    public static void newMusician() {
-        RestTemplate restTemplate = new RestTemplate();
-        Musician musician = new Musician("Tegan and Sara", 7, true);
-        URI uri = restTemplate.postForLocation(REST_SERVICE_URI + "/musicians", musician, Musician.class);
-        System.out.println("New Band: " + uri.toASCIIString());
-    }
+    public void testMusicians() throws Exception {
+        when(musicianService.findMusician(any(Long.class))).thenReturn((Musician) musicians);
 
-    @Test
-    public static void replaceMusician() {
-        RestTemplate restTemplate = new RestTemplate();
-        Musician musician = new Musician("Bruce Springsteen", 18, true);
-        System.out.println(musician);
+        mockMvc.perform(get("/musicians/").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
-
-    @Test
-    public static void deleteMusician() {
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.delete(REST_SERVICE_URI + "/musicians/1");
-    }
-
-    public static void main(String[] args){
-        listAllMusicians();
-        getOne();
-        newMusician();
-        listAllMusicians();
-        replaceMusician();
-        listAllMusicians();
-        deleteMusician();
-        listAllMusicians();
-    }
-
 }
